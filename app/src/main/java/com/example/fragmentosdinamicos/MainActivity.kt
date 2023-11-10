@@ -9,28 +9,41 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import com.example.fragmentosdinamicos.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    var cargarFragmento2 = true
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.container, FirstFragment())
+            .commit();
+
+
+
+        binding.fab.setOnClickListener {
+            var f: Fragment?=null
+
+            if(cargarFragmento2){f = AveriaFragment.newInstance(3  )}else{f = FirstFragment()}
+
+            supportFragmentManager
+                    .beginTransaction()
+                .replace(R.id.container, f)
+                .commit();
+            cargarFragmento2 = !cargarFragmento2
         }
     }
 
